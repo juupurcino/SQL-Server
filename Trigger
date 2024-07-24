@@ -1,0 +1,38 @@
+/*/CREATE TABLE teste (
+Data DATETIME,
+Operacao VARCHAR(50),  -- "Inserção"
+Observacao VARCHAR(255) -- "Inserido Pessoa (Nome)"
+PRIMARY KEY (Data, Operacao))  -- Os dois juntos são a Primary Key
+
+alter trigger dadosinseridos
+on Pessoa
+after insert
+as begin
+
+insert into teste values( 
+GETDATE(), 'Inserção', (select nome from inserted))
+end
+
+insert into Pessoa values('vqhgyy5h7615', 'Juliana', 'Aluno')
+
+select * from teste*/
+
+alter trigger remover 
+on tabela_de_clientes
+instead of delete
+as begin
+
+declare @Cpf varchar(11)
+select @Cpf = Cpf from deleted
+
+delete from ITENS_NOTAS_FISCAIS where NUMERO IN	(select NOTAS_FISCAIS.CPF from NOTAS_FISCAIS where NOTAS_FISCAIS.CPF = @Cpf)
+delete from NOTAS_FISCAIS where NOTAS_FISCAIS.CPF = @Cpf
+delete from TABELA_DE_CLIENTES where TABELA_DE_CLIENTES.CPF = @Cpf
+
+end
+
+delete from TABELA_DE_CLIENTES where TABELA_DE_CLIENTES.CPF = '7771579779'
+
+select * from TABELA_DE_CLIENTES
+select * from NOTAS_FISCAIS
+select * from ITENS_NOTAS_FISCAIS
