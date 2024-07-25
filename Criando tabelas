@@ -1,0 +1,39 @@
+create table pessoa(
+	idPessoa int not null primary key,
+	nome varchar(40) not null,
+	categoria varchar(20) not null)
+
+create table sala(
+	idSala int not null primary key,
+	nome varchar(40) not null,
+	capacidade int not null)
+
+create table evento(
+	idEvento int not null primary key,
+	idSala int not null foreign key references Sala(IdSala),
+	descricao varchar(40) not null,
+	DtHrInicio datetime not null,
+	DtHrFim datetime not null)
+
+create table equipamento(
+	idEquipamento int not null primary key,
+	idSala int foreign key references Sala(IdSala),
+	nome varchar(40) not null,
+	tipo varchar(40) not null)
+
+create table eventoPessoa(
+	idEventoPessoa int not null primary key,
+	idEvento int foreign key references evento(IdEvento),
+	idPessoa int foreign key references pessoa(IdPessoa),
+	papelEvento varchar(40) not null,
+	presenca bit)
+
+create table eventoEquipamento(
+	idEventoEquipamento int not null primary key,
+	idEvento int foreign key references evento(IdEvento),
+	idEquipamento int foreign key references equipamento(IdEquipamento)
+	)
+
+
+
+
